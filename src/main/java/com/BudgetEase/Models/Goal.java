@@ -1,30 +1,31 @@
 package com.BudgetEase.Models;
 
-import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "financialGoal")
-public class FinancialGoal {
+@NoArgsConstructor
+@Document(collection = "goals")
+public class Goal {
+
     @Id
     private String goalId;
-
-    @DBRef
-    private User user;
-
     private String goalName;
     private double targetAmount;
     private double currentAmount;
     private LocalDateTime deadline;
+    private GoalStatus status;
+
+    @DBRef
+    private User user;
+
 }

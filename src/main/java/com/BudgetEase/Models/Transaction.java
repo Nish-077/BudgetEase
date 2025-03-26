@@ -16,22 +16,25 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "transactions")
-public abstract class Transaction {
+public class Transaction {
+
     @Id
     private String transactionId;
-
-    @DBRef
-    private Category category;
-
     private double amount;
     private LocalDateTime date;
+    private TransactionType type;
     private String description;
 
     @DBRef
     private User user;
-
     @DBRef
-    private Budget budget;
+    private Category category;
 
-    // public abstract void applyToBudget(Budget budget);
+    public boolean isExpense(){
+        return this.type == TransactionType.EXPENSE;
+    }
+
+    public boolean isIncome(){
+        return this.type == TransactionType.INCOME;
+    }
 }

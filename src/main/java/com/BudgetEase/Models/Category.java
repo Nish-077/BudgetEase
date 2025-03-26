@@ -13,12 +13,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "category")
+@Document(collection = "categories")
 public class Category {
+
     @Id
     private String categoryId;
-    private String name;
+    private String categoryName;
 
     @DBRef
     private User user;
+
 }
