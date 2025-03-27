@@ -37,7 +37,7 @@ public class User {
     @DBRef
     private List<Category> categories;
     @DBRef
-    private List<FinancialGoal> goals;
+    private List<Goal> goals;
     @DBRef
     private List<Reward> rewards;
     @DBRef
