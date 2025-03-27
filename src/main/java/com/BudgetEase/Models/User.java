@@ -3,14 +3,14 @@ package com.BudgetEase.Models;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -21,11 +21,19 @@ public class User {
 
     @Id
     private String userId;
+
+    @NotBlank(message = "Username is mandatory")
     private String userName;
+
+    @Email(message = "Email should be valid")
     private String email;
-    private String passwordHash;
+
+    @Size(min=10, max=10, message = "Enter Valid 10 digit Phone Number")
     private String phoneNumber;
+
+    private String passwordHash;
     private LocalDateTime createdAt;
+
     private String profilePictureUrl;
 
     @DBRef
@@ -37,30 +45,10 @@ public class User {
     @DBRef
     private List<Category> categories;
     @DBRef
-    private List<FinancialGoal> goals;
+    private List<Goal> goals;
     @DBRef
     private List<Reward> rewards;
     @DBRef
     private List<Notification> notifications;
-
-    public boolean isValidUserName(String name) {
-        //logic
-        return true;
-    }
-
-    public boolean isValidEmail(String email) {
-        //logic
-        return true;
-    }
-
-    public boolean isValidPassword(String password) {
-        //logic
-        return true;
-    }
-
-    public boolean isValidPhoneNumber(String phoneNumber) {
-        //logic
-        return true;
-    }
 
 }
