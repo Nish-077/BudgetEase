@@ -4,7 +4,7 @@ package com.BudgetEase.BudgetEaseService;
 import com.BudgetEase.Exceptions.InvalidUserCredentialsException;
 import com.BudgetEase.Exceptions.UserAlreadyExistsException;
 import com.BudgetEase.Models.User;
-import com.BudgetEase.repository.BudgetEaseRepository;
+import com.BudgetEase.repository.UserRepository;
 import com.BudgetEase.utils.PasswordUtil;
 import com.BudgetEase.utils.ValidateEmail;
 
@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class UserService {
-    private final BudgetEaseRepository repository;
+    private final UserRepository repository;
 
     @SuppressWarnings("unchecked")
     public void registerUser(User user) {
