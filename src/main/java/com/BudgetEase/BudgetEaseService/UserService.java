@@ -17,7 +17,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @AllArgsConstructor
 public class UserService {
