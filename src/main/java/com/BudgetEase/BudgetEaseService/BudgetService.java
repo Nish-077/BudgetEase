@@ -1,8 +1,10 @@
 package com.BudgetEase.BudgetEaseService;
 
-import java.time.LocalDateTime;
-import java.util.List;
+// import java.time.LocalDateTime;
+// import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
 
 import com.BudgetEase.Models.Category;
 import com.BudgetEase.Exceptions.BudgetNotFoundException;
@@ -10,6 +12,10 @@ import com.BudgetEase.Models.Budget;
 import com.BudgetEase.repository.BudgetRepository;
 import com.BudgetEase.repository.TransactionRepository;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+@Service
 public class BudgetService {
     private BudgetRepository budgetRepository;
     private TransactionRepository transactionRepository;
@@ -19,7 +25,16 @@ public class BudgetService {
         budgetRepository.save(budget);
     }
 
-    public void addBudgetToCategory( Category category, Budget budget ){
+    public void addBudgetToCategory( Category category, String budgetId ){
+
+        Optional<Budget> checkBudget = budgetRepository.findById(budgetId);
+
+        if(!checkBudget.isPresent()){
+            throw new BudgetNotFoundException("Budget with id not found!");
+        }
+
+        Budget budget = checkBudget.get();
+
         budget.setCategory(category);
     }
 

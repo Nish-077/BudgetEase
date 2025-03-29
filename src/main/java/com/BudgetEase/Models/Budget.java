@@ -1,7 +1,6 @@
 package com.BudgetEase.Models;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -29,6 +28,7 @@ public class Budget {
     @Id
     private String budgetId;
 
+    // @NotBlank only applicable for String types
     @NotBlank(message = "Input should not be blank")
     private String budgetName;
 
@@ -71,6 +71,7 @@ public class Budget {
                 (date.isBefore(this.endDate) || date.isEqual(this.endDate)));
     }
 
+    // Add @Valid annotation in controller
     @AssertTrue(message = "Start date must be before end date")
     public boolean isStartBeforeEndDate(){
         if( this.startDate == null || this.endDate == null ){

@@ -17,4 +17,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUserDoesNotExistsException(InvalidUserCredentialsException exc) {
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(BudgetNotFoundException.class)
+    public ResponseEntity<String> handleBudggetNotFoundException(BudgetNotFoundException exc){
+        return new ResponseEntity<>(exc.getMessage(), HttpStatus.CONFLICT);
+    }
 }
