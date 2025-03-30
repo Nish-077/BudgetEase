@@ -6,11 +6,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.BudgetEase.Models.TransactionType;
+// import com.BudgetEase.Models.TransactionType;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Document(collection = "transactions")
 public class Transaction {
 
@@ -44,7 +46,6 @@ public class Transaction {
     private Category category;
 
     public boolean isExpense(){
-        // return this.type == TransactionType.EXPENSE;
         return this.type == TransactionType.EXPENSE;
     }
 

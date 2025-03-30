@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.BudgetEase.Models.Category;
+import com.BudgetEase.BudgetEaseService.dtos.BudgetUpdate;
 import com.BudgetEase.Exceptions.BudgetNotFoundException;
 import com.BudgetEase.Models.Budget;
 import com.BudgetEase.repository.BudgetRepository;
@@ -51,14 +52,22 @@ public class BudgetService {
 
     }
     
-    public void updateBudget( Budget budget ){
+    public Budget updateBudget( String budgetId, final BudgetUpdate budgetUpdate ){
+        return budgetRepository.findById(budgetId).map(
+            existingBudget -> {
+                final Budget updatedBudget = Budget.builder()
+                .budgetId(budgetId)
+                .budgetName(budgetUpdate.getBudgetName())
+                .allocatedAmount(budgetUpdate.getAllocatedAmount())
+                .startDate(budgetUpdate.getStartDate())
+                .endDate(budgetUpdate.getEndDate())
+                .category(budgetUpdate.getCategory())
+                .build();
 
-        Optional<Budget> checkBudget = budgetRepository.findById(budget.getBudgetId());
-        if(!checkBudget.isPresent()){
-            throw new BudgetNotFoundException("Budget with id not found!");
-        }
-
-        budgetRepository.save(budget);
+                return budgetRepository.save(updatedBudget);
+            }
+        ).orElseThrow( () -> new BudgetNotFoundException("Budget with given id not found") );
+        
     }
 
     public Double checkRemainingAmount( String budgetId ){

@@ -19,7 +19,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BudgetNotFoundException.class)
-    public ResponseEntity<String> handleBudggetNotFoundException(BudgetNotFoundException exc){
+    public ResponseEntity<String> handleBudgetNotFoundException(BudgetNotFoundException exc){
+        return new ResponseEntity<>(exc.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<String> handleCategoryNotFoundException(CategoryNotFoundException exc){
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.CONFLICT);
     }
 }

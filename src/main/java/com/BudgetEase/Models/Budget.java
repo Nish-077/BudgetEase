@@ -14,6 +14,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Document(collection = "budgets")
 public class Budget {
 
@@ -57,7 +59,7 @@ public class Budget {
 
     public double remainingAmount(TransactionRepository transactionRepository) {
         // Get all expense transactions related to this budget
-        double currentSpending = transactionRepository.findByCategory(this.category).stream()
+        double currentSpending = transactionRepository.findByCategoryExpense(this.category).stream()
         .filter(Transaction::isExpense) // Only include expenses
         .mapToDouble(Transaction::getAmount)
         .sum();
