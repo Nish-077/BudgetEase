@@ -1,11 +1,6 @@
 package com.BudgetEase.BudgetEaseService;
 
 import java.util.List;
-import java.util.Optional;
-
-import javax.management.RuntimeErrorException;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.BudgetEase.Exceptions.CategoryNotFoundException;
 import com.BudgetEase.Models.Budget;
@@ -20,7 +15,6 @@ public class CategoryService {
     private final TransactionRepository transactionRepository;
     private final BudgetRepository budgetRepository;
 
-    @Autowired
     public CategoryService(CategoryRepository categoryRepository, 
                            TransactionRepository transactionRepository, 
                            BudgetRepository budgetRepository) {

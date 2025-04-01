@@ -4,19 +4,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.BudgetEase.BudgetEaseService.dtos.TransactionUpdate;
 import com.BudgetEase.Exceptions.TransactionNotFoundException;
 import com.BudgetEase.Models.Transaction;
+import com.BudgetEase.dtos.TransactionUpdate;
 import com.BudgetEase.repository.TransactionRepository;
 
 @Service
 public class TransactionService {
     private final TransactionRepository transactionRepository;
 
-    @Autowired
     public TransactionService(TransactionRepository transactionRepository){
         this.transactionRepository=transactionRepository;
     }

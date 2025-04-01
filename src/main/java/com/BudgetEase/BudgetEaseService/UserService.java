@@ -26,19 +26,23 @@ public class UserService {
     private final UserRepository repository;
 
     @SuppressWarnings("unchecked")
-    public void registerUser(User user) {
-        Optional<User> registeredUser = repository.findByEmail(user.getEmail());
+    public User registerUser(String email, String username, String password, String phoneNo) {
+        Optional<User> registeredUser = repository.findByEmail(email);
         if(registeredUser.isPresent()){
             throw new UserAlreadyExistsException("Email already exists");
         }
 
-        registeredUser = repository.findByUserName(user.getUserName());
+        registeredUser = repository.findByUserName(username);
         if(registeredUser.isPresent()){
             throw new UserAlreadyExistsException("Username already taken");
         }
 
-        user.setPasswordHash(PasswordUtil.hashPassword(user.getPasswordHash()));
-        repository.save(user);
+        User user = new User();
+        user.setEmail(email);
+        user.setUserName(username);
+        user.setPhoneNumber(phoneNo);
+        user.setPasswordHash(PasswordUtil.hashPassword(password));
+        return repository.save(user);
     }
 
     public String loginUser(String identifier, String password) {
@@ -75,7 +79,6 @@ public class UserService {
                 .sign(jwtAlgorithm); // Sign the token with the secret key
 
         return token; 
-
     }
 
     public void updateProfile(String userId, String newEmail, String newUserName) {

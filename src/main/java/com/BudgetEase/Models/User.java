@@ -26,6 +26,7 @@ public class User {
     private String userName;
 
     @Email(message = "Email should be valid")
+    @NotBlank(message = "Input is mandatory!")
     private String email;
 
     @Size(min=10, max=10, message = "Enter Valid 10 digit Phone Number")

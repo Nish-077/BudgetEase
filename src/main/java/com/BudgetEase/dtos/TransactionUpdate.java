@@ -1,4 +1,4 @@
-package com.BudgetEase.BudgetEaseService.dtos;
+package com.BudgetEase.dtos;
 
 import java.time.LocalDateTime;
 

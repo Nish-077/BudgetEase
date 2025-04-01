@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.BudgetEase.Models.Category;
-import com.BudgetEase.BudgetEaseService.dtos.BudgetUpdate;
+import com.BudgetEase.dtos.BudgetUpdate;
 import com.BudgetEase.Exceptions.BudgetNotFoundException;
 import com.BudgetEase.Models.Budget;
 import com.BudgetEase.repository.BudgetRepository;
