@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class FileUpload {
 
     private final Cloudinary cloudinary;
@@ -27,7 +29,7 @@ public class FileUpload {
         ));
     }
 
-    public String uploadFile(File file) throws IOException {
+    public String uploadFile(MultipartFile file) throws IOException {
         // Validate file type
         if (!isAllowedFileType(file)) {
             throw new IllegalArgumentException("Invalid file type. Only images and PDFs are allowed.");
@@ -38,25 +40,30 @@ public class FileUpload {
 
         // Upload the file to Cloudinary
         @SuppressWarnings("rawtypes")
-        Map result = cloudinary.uploader().upload(file, ObjectUtils.asMap("resource_type", resourceType));
+        Map result = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("resource_type", resourceType));
 
         // Return the secure URL of the uploaded file
         return (String) result.get("secure_url");
     }
 
-    private boolean isAllowedFileType(File file) {
+    public boolean isAllowedFileType(MultipartFile file) {
         // Check file extension
-        String fileName = file.getName().toLowerCase();
+        String fileName = file.getOriginalFilename().toLowerCase();
         return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") ||
                fileName.endsWith(".gif") || fileName.endsWith(".bmp") || fileName.endsWith(".tiff") ||
                fileName.endsWith(".pdf") || fileName.endsWith(".doc") || fileName.endsWith(".docx") ||
                fileName.endsWith(".txt");
     }
 
-    private boolean isImageFile(File file) {
+    public boolean isImageFile(MultipartFile userProfilePic) {
         // Check if the file is an image based on its extension
-        String fileName = file.getName().toLowerCase();
+        String fileName = userProfilePic.getOriginalFilename().toLowerCase();
         return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") ||
                fileName.endsWith(".gif") || fileName.endsWith(".bmp") || fileName.endsWith(".tiff");
     }
+
+    // public boolean isImageFile(MultipartFile userProfilePic) {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'isImageFile'");
+    // }
 }

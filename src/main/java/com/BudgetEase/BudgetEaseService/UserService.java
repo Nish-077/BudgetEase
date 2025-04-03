@@ -81,7 +81,7 @@ public class UserService {
         return token; 
     }
 
-    public void updateProfile(String userId, String newEmail, String newUserName) {
+    public void updateProfile(String userId, String newEmail, String newUserName, String profileUrl) {
         // Find the user by ID
         Optional<User> optionalUser = repository.findById(userId);
         if (!optionalUser.isPresent()) {
@@ -110,6 +110,7 @@ public class UserService {
         // Update the user's email and username
         user.setEmail(newEmail);
         user.setUserName(newUserName);
+        user.setProfilePictureUrl(profileUrl);
     
         // Save the updated user
         repository.save(user);
@@ -132,5 +133,9 @@ public class UserService {
     
         // Save the updated user
         repository.save(user);
+    }
+
+    public Optional<User> getUserById(String userId){
+        return repository.findById(userId);
     }
 }
