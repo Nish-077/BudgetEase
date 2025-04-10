@@ -1,31 +1,34 @@
 package com.BudgetEase.Models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "goals")
-public class Goal {
-
+@Builder
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Document(collection = "Goal")
+public class Goal extends FinancialTarget{
     @Id
     private String goalId;
-    private String goalName;
-    private double targetAmount;
-    private double currentAmount;
-    private LocalDateTime deadline;
-    private GoalStatus status;
 
-    @DBRef
-    private User user;
+    private String purpose;
+
+    @Override
+    public boolean isOverdue(){
+        return false;
+    }
+
+    @Override
+    public double progress(){
+        return 0.0;
+    }
 
 }

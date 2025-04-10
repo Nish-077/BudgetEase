@@ -27,4 +27,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleCategoryNotFoundException(CategoryNotFoundException exc){
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(NoTransactionsFoundException.class)
+    public ResponseEntity<String> handleNoTransactions(NoTransactionsFoundException exc){
+        return new ResponseEntity<>(exc.getMessage(), HttpStatus.CONFLICT);
+    }
 }

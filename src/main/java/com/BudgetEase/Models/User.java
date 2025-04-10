@@ -39,12 +39,10 @@ public class User {
 
     @DBRef
     private RewardAccount rewardAccount;
-    @DBRef
-    private List<Transaction> transactions;
+    
     @DBRef
     private List<Budget> budgets;
-    @DBRef
-    private List<Category> categories;
+    
     @DBRef
     private List<Goal> goals;
     @DBRef

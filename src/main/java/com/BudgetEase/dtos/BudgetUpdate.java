@@ -2,7 +2,6 @@ package com.BudgetEase.dtos;
 
 import java.time.LocalDateTime;
 
-import com.BudgetEase.Models.Category;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,5 +20,4 @@ public class BudgetUpdate {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    private Category category;
 }

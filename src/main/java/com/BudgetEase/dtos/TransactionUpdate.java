@@ -2,7 +2,6 @@ package com.BudgetEase.dtos;
 
 import java.time.LocalDateTime;
 
-import com.BudgetEase.Models.Category;
 import com.BudgetEase.Models.TransactionType;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +21,5 @@ public class TransactionUpdate {
     private TransactionType type;
 
     private String description;
-
-    private Category category;
 
 }

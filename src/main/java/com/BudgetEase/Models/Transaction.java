@@ -3,53 +3,32 @@ package com.BudgetEase.Models;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-// import com.BudgetEase.Models.TransactionType;
-
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "transactions")
+@Data
+@Document(collection = "Transaction")
 public class Transaction {
-
     @Id
     private String transactionId;
 
-    @NotNull(message = "Field must not be empty!")
-    @Min(value = (long) 0.01, message = "Amount cannot be zero")
+    private TransactionType type;
+
     private double amount;
 
-    @NotNull(message = "Field must not be empty!")
     private LocalDateTime date;
-
-    @NotNull(message = "Field must not be empty!")
-    private TransactionType type;
 
     private String description;
 
-    @DBRef
-    @NotNull(message = "User should not be null")
-    private User user;
-    @DBRef
-    private Category category;
+    private String userId;
+    private String budgetId;
+    private String goalId;
 
-    public boolean isExpense(){
-        return this.type == TransactionType.EXPENSE;
-    }
-
-    public boolean isIncome(){
-        return this.type == TransactionType.INCOME;
-    }
 }

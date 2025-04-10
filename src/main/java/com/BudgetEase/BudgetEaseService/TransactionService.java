@@ -1,75 +1,99 @@
 package com.BudgetEase.BudgetEaseService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.NoTransactionException;
 
-import com.BudgetEase.Exceptions.TransactionNotFoundException;
+import com.BudgetEase.Models.Budget;
+import com.BudgetEase.Models.Goal;
 import com.BudgetEase.Models.Transaction;
-import com.BudgetEase.dtos.TransactionUpdate;
+import com.BudgetEase.Models.TransactionType;
+import com.BudgetEase.repository.BudgetRepository;
+import com.BudgetEase.repository.GoalRepository;
 import com.BudgetEase.repository.TransactionRepository;
 
 @Service
 public class TransactionService {
-    private final TransactionRepository transactionRepository;
 
-    public TransactionService(TransactionRepository transactionRepository){
-        this.transactionRepository=transactionRepository;
-    }
+    @Autowired
+    private TransactionRepository transactionRepository;
 
-    public void createTransaction( Transaction transaction ){
-        transactionRepository.save(transaction);
-    }
+    private GoalRepository goalRepository;
 
-    public List<Transaction> getAllIncome(){
-        List<Transaction> transactions = transactionRepository.findAll();
+    private BudgetRepository budgetRepository;
 
-        return transactions.stream().filter(Transaction::isIncome).toList();
-    }
+    public Transaction addTransactionToBudget(Transaction transaction) throws IllegalArgumentException{
+        String budgetId = transaction.getBudgetId();
 
-    public List<Transaction> getAllExpense(){
-        List<Transaction> transactions = transactionRepository.findAll();
-
-        return transactions.stream().filter(Transaction::isExpense).toList();
-    }
-
-    public Transaction updateTransaction( String transactionId, final TransactionUpdate transactionUpdate ){
-        return transactionRepository.findById(transactionId).map( 
-            existingTransaction -> {
-                final Transaction updatedTransaction = Transaction.builder()
-                .transactionId(transactionId)
-                .amount(transactionUpdate.getAmount())
-                .date(transactionUpdate.getDate())
-                .type(transactionUpdate.getType())
-                .description(transactionUpdate.getDescription())
-                .category(transactionUpdate.getCategory())
-                .build();
-
-                return transactionRepository.save(updatedTransaction);
-            }
-         ).orElseThrow( () -> new TransactionNotFoundException("Transaction with this id not found") );
-    }
-
-    public Transaction deleteTransaction( String transactionId ){
-        Optional<Transaction> checkTransaction = transactionRepository.findById(transactionId);
-
-        if(!checkTransaction.isPresent()){
-            throw new TransactionNotFoundException("Transaction not found");
+        // Check if transaction type is EXPENSE
+        if (!transaction.getType().equals(TransactionType.EXPENSE)) {
+            throw new IllegalArgumentException("Only EXPENSE transactions can be associated with a budget.");
         }
 
-        transactionRepository.deleteById(transactionId);
+        // Fetch and validate budget
+        Budget budget = budgetRepository.findById(budgetId)
+                .orElseThrow(() -> new IllegalArgumentException("Budget with ID " + budgetId + " not found"));
 
-        return checkTransaction.get();
+        if (!budget.isActive()) {
+            throw new IllegalArgumentException("Budget is not active");
+        }
+
+        // All good — associate and save
+        return transactionRepository.save(transaction);
     }
 
-    public List<Transaction> getTransactionsByDateRange(LocalDateTime start, LocalDateTime end) {
-        return transactionRepository.findByDateBetween(start, end);
+    public Transaction addTransactionToGoal(Transaction transaction) throws IllegalArgumentException{
+        String goalId = transaction.getGoalId();
+
+        if(!transaction.getType().equals(TransactionType.INCOME)){
+            throw new IllegalArgumentException("Only INCOMES can be associated with budget");
+        }
+
+        Goal goal = goalRepository.findById(goalId).orElseThrow( () -> new IllegalArgumentException("Goal ID does not exist") );
+
+        if(!goal.isActive()){
+            throw new IllegalArgumentException("Goal is inactive");
+        }
+
+        return transactionRepository.save(transaction);
     }
 
-    public List<Transaction> getTransactionsByUser(String userId) {
-        return transactionRepository.findByUserId(userId);
-    }
+    public List<Transaction> fetchTransactionByBudgetId(String budgetId){
+        List<Transaction> transactions = transactionRepository.findByBudgetId(budgetId);
+
+        if (transactions.isEmpty()) {
+            throw new NoTransactionException("No transactions from "+budgetId);
+        }
     
+        return transactions;
+    }
+
+    public List<Transaction> fetchTransactionByGoalId(String goalId){
+        List<Transaction> transactions = transactionRepository.findByGoalId(goalId);
+
+        if(transactions.isEmpty()){
+            throw new NoTransactionException("No transactions from "+goalId);
+        }
+
+        return transactions;
+    }
+
+    public double getCurrentSpending(List<Transaction> transactions){
+        return transactions.stream().mapToDouble(Transaction::getAmount).sum();
+    }
+
+    public double getCurrentSpending(String budgetId){
+        return transactionRepository.findByBudgetId(budgetId).stream()
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+    }
+
+    public double getCurrentGain(String goalId){
+        return transactionRepository.findByGoalId(goalId).stream()
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+    }
 }
