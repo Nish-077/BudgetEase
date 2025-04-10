@@ -1,11 +1,13 @@
 package com.BudgetEase.Strategies;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.BudgetEase.BudgetEaseService.TransactionService;
 import com.BudgetEase.Models.FinancialTarget;
 import com.BudgetEase.Models.Goal;
 
+@Component
 public class GoalProgressStrategy implements ProgressStrategy {
 
     @Autowired

@@ -19,7 +19,11 @@ public abstract class FinancialTarget {
     protected LocalDateTime endDate;
 
     public boolean isActive(){
-        return ( LocalDateTime.now().isAfter(startDate) && LocalDateTime.now().isBefore(endDate) );
+        return ( LocalDateTime.now().isAfter(this.startDate) && LocalDateTime.now().isBefore(this.endDate) );
+    }
+
+    public boolean startDateBeforeEndDate(){
+        return ( this.startDate.isBefore(this.endDate) );
     }
 
     public abstract double progress();

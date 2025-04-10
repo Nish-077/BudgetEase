@@ -9,4 +9,5 @@ import com.BudgetEase.Models.Transaction;
 public interface TransactionRepository extends MongoRepository<Transaction, String> {
     public List<Transaction> findByBudgetId(String budgetId);
     public List<Transaction> findByGoalId(String goalId);
+    public List<Transaction> findByUserId(String userId); 
 }

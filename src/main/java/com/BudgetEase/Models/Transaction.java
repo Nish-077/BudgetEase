@@ -27,6 +27,10 @@ public class Transaction {
 
     private String description;
 
+    private String merchant;
+
+    private PaymentStatus status;
+
     private String userId;
     private String budgetId;
     private String goalId;

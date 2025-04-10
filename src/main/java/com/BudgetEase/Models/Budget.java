@@ -9,13 +9,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Document(collection = "Budget")
-public class Budget extends FinancialTarget {
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "Budget")public class Budget extends FinancialTarget {
 
     @Id
     private String budgetId;

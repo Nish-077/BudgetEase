@@ -26,9 +26,7 @@ import com.BudgetEase.dtos.UpdateProfile;
 import com.BudgetEase.utils.ApiResponse;
 import com.BudgetEase.utils.FileUpload;
 import com.BudgetEase.utils.GetCurrentUser;
-import com.cloudinary.Api;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
@@ -37,7 +35,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService){
         this.userService=userService;
     }

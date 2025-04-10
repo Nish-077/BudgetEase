@@ -1,6 +1,7 @@
 package com.BudgetEase.Security;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
                 System.out.println("User id is = "+userId);
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(token, userId, null);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(token, userId, new ArrayList<>());
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

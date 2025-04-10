@@ -1,7 +1,6 @@
 package com.BudgetEase.BudgetEaseService;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,17 @@ import com.BudgetEase.repository.TransactionRepository;
 @Service
 public class TransactionService {
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    TransactionRepository transactionRepository;
+    BudgetRepository budgetRepository;
+    GoalRepository goalRepository;
 
-    private GoalRepository goalRepository;
-
-    private BudgetRepository budgetRepository;
+    public TransactionService(TransactionRepository transactionRepository,
+                          BudgetRepository budgetRepository,
+                          GoalRepository goalRepository) {
+        this.transactionRepository = transactionRepository;
+        this.budgetRepository = budgetRepository;
+        this.goalRepository = goalRepository;
+    }
 
     public Transaction addTransactionToBudget(Transaction transaction) throws IllegalArgumentException{
         String budgetId = transaction.getBudgetId();
@@ -81,10 +85,6 @@ public class TransactionService {
         return transactions;
     }
 
-    public double getCurrentSpending(List<Transaction> transactions){
-        return transactions.stream().mapToDouble(Transaction::getAmount).sum();
-    }
-
     public double getCurrentSpending(String budgetId){
         return transactionRepository.findByBudgetId(budgetId).stream()
             .mapToDouble(Transaction::getAmount)
@@ -95,5 +95,35 @@ public class TransactionService {
         return transactionRepository.findByGoalId(goalId).stream()
             .mapToDouble(Transaction::getAmount)
             .sum();
+    }
+
+    public Transaction createTransaction(Transaction transaction){
+        return transactionRepository.save(transaction);
+    }
+
+    public Transaction deleteTransaction(String transactionId){
+
+        Transaction transaction = transactionRepository.findById(transactionId).orElseThrow( () -> new IllegalArgumentException("transactionId doesn't exist") );
+
+        transactionRepository.deleteById(transactionId);
+
+        return transaction;
+    }
+
+    public List<Transaction> getTransactions(){
+        List<Transaction> transactions = transactionRepository.findAll();
+
+        return transactions;
+    }
+
+    public List<Transaction> fetchTransactionByUserId(String userId) {
+        return transactionRepository.findByUserId(userId);
+    }
+    
+    public List<Transaction> createTransactionsFromList(List<Transaction> transactions){
+
+        transactions.forEach( (transaction) -> transactionRepository.save(transaction) );
+
+        return transactions;
     }
 }
