@@ -45,4 +45,9 @@ public class BudgetService {
         return budgetRepository.save(budgetExists);
     }
 
+    public Budget findBudgetById(String budgetId){
+        Budget budget = budgetRepository.findById(budgetId).orElseThrow( () -> new IllegalArgumentException("Invalid budget id") );
+
+        return budget;
+    }
 }

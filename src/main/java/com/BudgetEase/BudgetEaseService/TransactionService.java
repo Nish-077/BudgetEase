@@ -10,6 +10,7 @@ import com.BudgetEase.Models.Budget;
 import com.BudgetEase.Models.Goal;
 import com.BudgetEase.Models.Transaction;
 import com.BudgetEase.Models.TransactionType;
+import com.BudgetEase.dtos.TransactionUpdate;
 import com.BudgetEase.repository.BudgetRepository;
 import com.BudgetEase.repository.GoalRepository;
 import com.BudgetEase.repository.TransactionRepository;
@@ -110,8 +111,8 @@ public class TransactionService {
         return transaction;
     }
 
-    public List<Transaction> getTransactions(){
-        List<Transaction> transactions = transactionRepository.findAll();
+    public List<Transaction> getTransactions(String userId){
+        List<Transaction> transactions = transactionRepository.findByUserId(userId);
 
         return transactions;
     }
@@ -126,4 +127,26 @@ public class TransactionService {
 
         return transactions;
     }
+
+    public Transaction findTransactionById(String transactionId){
+        return transactionRepository.findByTransactionId(transactionId);
+    }
+
+    public Transaction updateTransaction(TransactionUpdate updatedTransaction, String transactionId){
+
+        Transaction existingTransaction = transactionRepository.findById(transactionId).orElseThrow( () -> new IllegalArgumentException("Transaction not found") );
+
+        Transaction finalTransaction = Transaction.builder()
+            .transactionId(transactionId)
+            .amount(updatedTransaction.getAmount())
+            .date(updatedTransaction.getDate())
+            .description(updatedTransaction.getDescription())
+            .merchant(updatedTransaction.getMerchant())
+            .type(updatedTransaction.getType())
+            .status(updatedTransaction.getPaymentStatus())
+            .build();
+        
+        return finalTransaction;
+    }
+
 }
