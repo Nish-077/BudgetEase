@@ -14,7 +14,7 @@ import com.BudgetEase.BudgetEaseService.TransactionService;
 import com.BudgetEase.Models.Transaction;
 
 @RestController
-// @RequestMapping("/api/transactions")
+@RequestMapping("/api/transactions")
 public class TransactionController {
 
     private TransactionService transactionService;
@@ -31,5 +31,8 @@ public class TransactionController {
         transactionService.createTransactionsFromList(transactions);
         return ResponseEntity.ok(transactions);
     }
+
+    // @PostMapping("create-normal-transaction")
+    // public ResponseEntity<?> createTransaction()
 
 }

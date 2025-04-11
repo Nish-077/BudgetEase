@@ -65,6 +65,7 @@ public class GeminiVisionService {
                 - Do not omit the 'status' field
                 - Do not omit the 'merchant' field
                 - If negative amount encountered, type: "EXPENSE" and amount: absolute value of negative amount 
+                - If + positive sign seen in an amount, type: "INCOME" and amount: as it is.
                 - 'Failed' transactions must be detected and status set to 'FAILED'
                 - If transaction set to 'FAILED', do not include type field at all
                 - Return empty array if no valid transactions are found
