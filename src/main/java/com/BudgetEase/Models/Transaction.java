@@ -1,38 +1,30 @@
 package com.BudgetEase.Models;
 
 import java.time.LocalDateTime;
-
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @Builder
-@Data
-@Document(collection = "Transaction")
+@AllArgsConstructor
+@Document(collection = "transactions")
 public class Transaction {
     @Id
     private String transactionId;
-
-    private TransactionType type;
-
     private double amount;
-
     private LocalDateTime date;
-
+    private TransactionType type;
     private String description;
-
     private String merchant;
-
     private PaymentStatus status;
 
-    private String userId;
-    private String budgetId;
-    private String goalId;
+    public boolean isExpense(){
+        return type == TransactionType.EXPENSE;
+    }
+    public boolean isIncome(){
+        return type == TransactionType.INCOME;
+    }
 
 }

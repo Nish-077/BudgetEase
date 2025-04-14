@@ -2,34 +2,27 @@ package com.BudgetEase.Models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public class PointBasedReward implements Reward{
+@Document(collection = "point-rewards")
+public class PointBasedReward implements Reward {
 
     @Id
     private String rewardId;
     private String rewardName;
+    private String description;
     private int pointsRequired;
+    private String iconUrl;
     private LocalDateTime earnedAt;
 
-    @DBRef
-    private User user;
-
-    public String getDescription(){
-        //needs update
-        return "";
-    }
-
-    public String getRewardType(){
+    @Override
+    public String getRewardType() {
         return "Points-Based";
     }
 
