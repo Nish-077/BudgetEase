@@ -1,10 +1,12 @@
 package com.BudgetEase.Models;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
+import java.time.Duration;
 
-@Document(collection = "rewards")
 public interface Reward {
     String getRewardType();
-    String getDescription();
-}
 
+    default long getTimeSinceEarnedInDays(LocalDateTime earnedAt) {
+        return Duration.between(earnedAt, LocalDateTime.now()).toDays();
+    }
+}

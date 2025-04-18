@@ -1,33 +1,55 @@
 package com.BudgetEase.Models;
 
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+@Getter
+@Setter
 @Builder
 @EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Document(collection = "Budget")public class Budget extends FinancialTarget {
-
+@Document(collection = "budgets")
+public class Budget extends FinancialPlan {
     @Id
     private String budgetId;
+    private double allocatedAmount;
+    private BudgetStatus status;
 
-    private String categoryName;
-
-    @Override
-    public double progress(){
-        return 0.0;
+    public Budget(String categoryName, String description, boolean remindersEnabled, LocalDateTime startDate, LocalDateTime endDate, int rewardPoints) {
+        super(categoryName, description, remindersEnabled, startDate, endDate, rewardPoints);
     }
 
     @Override
-    public boolean isOverdue(){
-        return false;
+    public double progressPercentage(double currentSpending) {
+        if (allocatedAmount == 0) {
+            return 0;
+        }
+        return ((allocatedAmount - currentSpending) / allocatedAmount) * 100;
+    }
+
+    public boolean isWithinBudget(double currentSpendings) {
+        return currentSpendings <= allocatedAmount;
+    }
+
+    public double remainingAmount(double currentSpendings) {
+        return allocatedAmount - currentSpendings;
+    }
+
+    public double calculateOverspending(double currentSpendings) {
+        if (currentSpendings > allocatedAmount) {
+            return currentSpendings - allocatedAmount;
+        }
+        return 0;
+    }
+
+    public void resetBudget() {
+        this.allocatedAmount = 0;
+        this.status = BudgetStatus.INACTIVE;
+    }
+
+    public boolean isNearingLimit(double currentSpendings, double thresholdPercentage) {
+        double thresholdAmount = allocatedAmount * (thresholdPercentage / 100);
+        return currentSpendings >= (allocatedAmount - thresholdAmount);
     }
 }

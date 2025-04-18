@@ -6,12 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "reward_transactions")
 public class RewardTransaction {
@@ -22,7 +20,7 @@ public class RewardTransaction {
     private int pointsChanged;
 
     public String getFormattedTransaction() {
-        //logic
-        return "";
+        return String.format("Transaction ID: %s, Timestamp: %s, Points Changed: %d", 
+                              transactionId, timestamp, pointsChanged);
     }
 }

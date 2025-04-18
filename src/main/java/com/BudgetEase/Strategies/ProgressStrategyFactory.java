@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.BudgetEase.Models.Budget;
-import com.BudgetEase.Models.FinancialTarget;
 import com.BudgetEase.Models.Goal;
 
 @Component
