@@ -1,8 +1,7 @@
 package com.BudgetEase.Strategies;
 
-import com.BudgetEase.Models.FinancialTarget;
-
+import com.BudgetEase.Models.FinancialPlan;
 
 public interface OverdueStrategy {
-    public boolean isOverdue(FinancialTarget financialTarget);
+    public boolean isOverdue(FinancialPlan financialPlan);
 }

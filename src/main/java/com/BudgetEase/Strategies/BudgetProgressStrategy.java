@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import com.BudgetEase.BudgetEaseService.TransactionService;
 import com.BudgetEase.Models.Budget;
-import com.BudgetEase.Models.FinancialTarget;
 
 @Component
 public class BudgetProgressStrategy implements ProgressStrategy {
