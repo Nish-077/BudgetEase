@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "Budget")public class Budget extends FinancialTarget {
+@Document(collection = "Budget") 
+public class Budget extends FinancialTarget {
 
     @Id
     private String budgetId;

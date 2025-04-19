@@ -3,8 +3,10 @@ package com.BudgetEase.BudgetEaseService;
 
 import com.BudgetEase.Exceptions.InvalidUserCredentialsException;
 import com.BudgetEase.Exceptions.UserAlreadyExistsException;
+import com.BudgetEase.Models.Budget;
 import com.BudgetEase.Models.User;
 import com.BudgetEase.repository.UserRepository;
+import com.BudgetEase.utils.GetCurrentUser;
 import com.BudgetEase.utils.PasswordUtil;
 import com.BudgetEase.utils.ValidateEmail;
 
@@ -14,6 +16,7 @@ import lombok.AllArgsConstructor;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -137,5 +140,59 @@ public class UserService {
 
     public Optional<User> getUserById(String userId){
         return repository.findById(userId);
+    }
+
+    public void addBudget(Budget budget, String userId){
+        User user = repository.findById(userId).orElseThrow( () -> new IllegalArgumentException("User wit this id does not exist") );
+
+        List<Budget> budgets = user.getBudgets();
+
+        if(budgets == null){
+            budgets=new ArrayList<>();
+        }
+
+        if(budgets.stream().anyMatch(existingBudget -> existingBudget.getBudgetId().equals(budget.getBudgetId()))){
+            throw new IllegalArgumentException( "Budget with this id already exists for the user" );
+        }
+
+        budgets.add(budget);
+
+        user.setBudgets(budgets);
+        repository.save(user);
+    }
+
+    public List<Budget> listBudgets(String userId){
+        User user = repository.findById(userId).orElseThrow( () -> new IllegalArgumentException("User id does not exist") );
+
+        return user.getBudgets();
+    }
+
+    public void deleteBudget(String budgetId, String userId) {
+        // Find the user by ID
+        User user = repository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("User id not found"));
+    
+        // Get the user's budgets
+        List<Budget> budgets = user.getBudgets();
+    
+        // Check if the budgets list is null or empty
+        if (budgets == null || budgets.isEmpty()) {
+            throw new IllegalArgumentException("No budgets found for the user");
+        }
+    
+        // Find the budget to delete
+        Budget budgetToDelete = budgets.stream()
+            .filter(budget -> budget.getBudgetId().equals(budgetId))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Budget with this ID not found for the user"));
+    
+        // Remove the budget
+        budgets.remove(budgetToDelete);
+    
+        // Update the user's budgets
+        user.setBudgets(budgets);
+    
+        // Save the updated user
+        repository.save(user);
     }
 }
