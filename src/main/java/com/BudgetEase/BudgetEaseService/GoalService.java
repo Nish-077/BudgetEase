@@ -49,4 +49,10 @@ public class GoalService {
         return goal.startDateBeforeEndDate();
     }
 
+    public Goal getGoalById(String goalId){
+        Goal goal = goalRepository.findById(goalId).orElseThrow( () -> new IllegalArgumentException("No goal with this id") );
+
+        return goal;
+    }
+
 }

@@ -9,8 +9,12 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = "budgets")
-public class Budget extends FinancialPlan {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "Budget") 
+public class Budget extends FinancialTarget {
+
     @Id
     private String budgetId;
     private double allocatedAmount;

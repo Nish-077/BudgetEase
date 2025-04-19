@@ -5,19 +5,37 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter
-@Setter
-@Builder
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "transactions")
+@Builder
+@Data
+@Document(collection = "Transaction")
 public class Transaction {
     @Id
     private String transactionId;
-    private double amount;
-    private LocalDateTime date;
+
+    @NotNull
     private TransactionType type;
+
+    @NotNull
+    @Min(value = (long)0.01)
+    private double amount;
+
+    @NotNull
+    private LocalDateTime date;
+
+    @NotBlank
     private String description;
+
+    @NotBlank
     private String merchant;
+
+    @NotNull
     private PaymentStatus status;
 
     public boolean isExpense(){
