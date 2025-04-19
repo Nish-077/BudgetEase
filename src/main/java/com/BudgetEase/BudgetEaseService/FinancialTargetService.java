@@ -3,6 +3,7 @@ package com.BudgetEase.BudgetEaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.BudgetEase.Models.FinancialTarget;
 import com.BudgetEase.Strategies.OverdueStrategy;
 import com.BudgetEase.Strategies.OverdueStrategyFactory;
 import com.BudgetEase.Strategies.ProgressStrategy;

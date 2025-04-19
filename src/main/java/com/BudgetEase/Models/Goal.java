@@ -9,16 +9,16 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @EqualsAndHashCode(callSuper = true)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "goals")
-public class Goal extends FinancialPlan {
+public class Goal extends FinancialTarget {
     @Id
     private String goalId;
     private double targetAmount;
     private GoalStatus status;
-
-    public Goal(String categoryName, String description, boolean remindersEnabled, LocalDateTime startDate, LocalDateTime endDate, int rewardPoints) {
-        super(categoryName, description, remindersEnabled, startDate, endDate, rewardPoints);
-    }
+    private String purpose;
 
     @Override
     public double progressPercentage(double currentSpending) {

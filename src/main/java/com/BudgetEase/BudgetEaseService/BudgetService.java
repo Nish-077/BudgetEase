@@ -27,7 +27,7 @@ public class BudgetService {
 
         Budget budget = new Budget();
 
-        budget.setAmount(createBudget.getAmount());
+        budget.setAllocatedAmount(createBudget.getAmount());
         budget.setCategoryName(createBudget.getCategoryName());
         budget.setStartDate(createBudget.getStartDate());
         budget.setEndDate(createBudget.getEndDate());
@@ -55,7 +55,7 @@ public class BudgetService {
 
         budgetExists.setBudgetId(budget.getBudgetId());
         budgetExists.setCategoryName(budget.getCategoryName());
-        budgetExists.setAmount(budget.getAmount());
+        budgetExists.setAllocatedAmount(budget.getAllocatedAmount());
         budgetExists.setName(budget.getName());
         budgetExists.setStartDate(budget.getStartDate());
         budgetExists.setEndDate(budget.getEndDate());

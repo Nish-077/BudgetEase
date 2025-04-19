@@ -42,7 +42,7 @@ public class TransactionService {
         Budget budget = budgetRepository.findById(budgetId)
                 .orElseThrow(() -> new IllegalArgumentException("Budget with ID " + budgetId + " not found"));
 
-        if (!budget.isActive()) {
+        if (!budget.isActiveOn(transaction.getDate())) {
             throw new IllegalArgumentException("Budget is not active");
         }
 
@@ -59,7 +59,7 @@ public class TransactionService {
 
         Goal goal = goalRepository.findById(goalId).orElseThrow( () -> new IllegalArgumentException("Goal ID does not exist") );
 
-        if(!goal.isActive()){
+        if(!goal.isActiveOn(transaction.getDate())){
             throw new IllegalArgumentException("Goal is inactive");
         }
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.BudgetEase.BudgetEaseService.TransactionService;
 import com.BudgetEase.Models.Budget;
+import com.BudgetEase.Models.FinancialTarget;
 
 @Component
 public class BudgetProgressStrategy implements ProgressStrategy {
@@ -16,6 +17,6 @@ public class BudgetProgressStrategy implements ProgressStrategy {
     public double calculateProgress(FinancialTarget financialTarget){
         Budget budget = (Budget) financialTarget;
         double currentSpending = transactionService.getCurrentSpending(budget.getBudgetId());
-        return currentSpending/budget.getAmount();
+        return currentSpending/budget.getAllocatedAmount();
     }
 }

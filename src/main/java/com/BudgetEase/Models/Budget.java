@@ -20,9 +20,6 @@ public class Budget extends FinancialTarget {
     private double allocatedAmount;
     private BudgetStatus status;
 
-    public Budget(String categoryName, String description, boolean remindersEnabled, LocalDateTime startDate, LocalDateTime endDate, int rewardPoints) {
-        super(categoryName, description, remindersEnabled, startDate, endDate, rewardPoints);
-    }
 
     @Override
     public double progressPercentage(double currentSpending) {

@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Document(collection = "users")
 public class User {
@@ -24,11 +25,12 @@ public class User {
 
     @DBRef
     private RewardAccount rewardAccount;
+   
     @DBRef
-    private List<Transaction> transactions;
-    @DBRef
-    private List<FinancialPlan> plans;
+    private List<FinancialTarget> plans;
     @DBRef
     private List<Notification> notifications;
+    @DBRef
+    private List<Budget> budgets;
 
 }

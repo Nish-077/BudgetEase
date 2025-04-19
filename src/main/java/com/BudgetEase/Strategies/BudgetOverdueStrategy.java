@@ -1,6 +1,6 @@
 package com.BudgetEase.Strategies;
 
-import com.BudgetEase.Models.FinancialPlan;
+import com.BudgetEase.Models.FinancialTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.BudgetEase.BudgetEaseService.TransactionService;
@@ -13,10 +13,10 @@ public class BudgetOverdueStrategy implements OverdueStrategy {
     private TransactionService transactionService;
 
     @Override
-    public boolean isOverdue(FinancialPlan financialPlan){
+    public boolean isOverdue(FinancialTarget financialPlan){
         Budget budget = (Budget) financialPlan;
 
-        return transactionService.getCurrentSpending(budget.getBudgetId()) > budget.getAmount() && budget.isActive();
+        return transactionService.getCurrentSpending(budget.getBudgetId()) > budget.getAllocatedAmount();
     }
 
 }

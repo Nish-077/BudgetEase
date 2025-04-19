@@ -5,6 +5,9 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,6 +40,12 @@ public class Transaction {
 
     @NotNull
     private PaymentStatus status;
+
+    private String budgetId;
+
+    private String goalId;
+
+    private String userId;
 
     public boolean isExpense(){
         return type == TransactionType.EXPENSE;

@@ -36,7 +36,7 @@ public class GoalService {
         Goal goalExists = goalRepository.findById(goal.getGoalId()).orElseThrow( () -> new IllegalArgumentException("Goal with this id ") );
 
         goalExists.setGoalId(goal.getGoalId());
-        goalExists.setAmount(goal.getAmount());
+        goalExists.setTargetAmount(goal.getTargetAmount());
         goalExists.setName(goal.getName());
         goalExists.setPurpose(goal.getPurpose());
         goalExists.setStartDate(goal.getStartDate());
