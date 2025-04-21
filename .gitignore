@@ -3,6 +3,9 @@
 *.drawio
 *.mmd
 *.xml
+*.svg
+class_diagram.mmd
+*.txt
 
 HELP.md
 target/
