@@ -1,0 +1,25 @@
+package com.BudgetEase.Strategies;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.BudgetEase.BudgetEaseService.TransactionService;
+import com.BudgetEase.Models.FinancialTarget;
+import com.BudgetEase.Models.Goal;
+
+@Component
+public class GoalOverdueStrategy implements OverdueStrategy {
+
+    @Autowired
+    private TransactionService transactionService;
+
+    @Override
+    public boolean isOverdue(FinancialTarget financialTarget){
+        Goal goal = (Goal) financialTarget;
+
+        return transactionService.getCurrentGain(goal.getGoalId()) < goal.getTargetAmount() && goal.isActiveOn(LocalDateTime.now());
+
+    }
+}
