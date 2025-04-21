@@ -1,0 +1,244 @@
+
+
+classDiagram
+    %% Abstract Classes
+    class Account {
+        <<abstract>>
+        #int accountID
+        #string email
+        #string password
+        +login()
+        +logout()
+    }
+    
+    class FinancialEntity {
+        <<abstract>>
+        #int entityID
+        #float amount
+        #date transactionDate
+        #string description
+        +calculate()
+    }
+    
+    class NotificationMessage {
+        <<abstract>>
+        #int messageID
+        #string content
+        #date timestamp
+        #boolean isRead
+        +send()
+        +markAsRead()
+    }
+    
+    %% Regular Classes
+    class User {
+        -int userID
+        -string username
+        -string profilePicture
+        +register()
+        +updateProfile()
+        +deleteAccount()
+        +viewNotifications()
+    }
+    
+    class FinancialAdvisor {
+        -int advisorID
+        -string qualification
+        -string specialty
+        +provideSuggestions()
+        +analyzePortfolio()
+    }
+    
+    class Authentication {
+        -string token
+        -datetime expiration
+        +validateCredentials()
+        +generateToken()
+        +revokeAccess()
+    }
+    
+    class Budget {
+        -int budgetID
+        -string name
+        -date startDate
+        -date endDate
+        +create()
+        +update()
+        +delete()
+        +calculateProgress()
+    }
+    
+    class RecurringBudget {
+        -string frequency
+        -bool autoRenew
+        +setupRecurrence()
+        +adjustForInflation()
+    }
+    
+    class Expense {
+        -int expenseID
+        -int categoryID
+        -string paymentMethod
+        +add()
+        +edit()
+        +delete()
+    }
+    
+    class Income {
+        -string source
+        -bool isTaxable
+        +recordIncome()
+        +calculateNetIncome()
+    }
+    
+    class Category {
+        -int categoryID
+        -string name
+        -string type
+        -string color
+        +add()
+        +remove()
+        +edit()
+    }
+    
+    class FinancialGoal {
+        -int goalID
+        -string description
+        -float targetAmount
+        -date targetDate
+        -float currentProgress
+        +set()
+        +trackProgress()
+        +updateProgress()
+    }
+    
+    class Transaction {
+        -int transactionID
+        -string type
+        -string merchant
+        +validate()
+        +categorize()
+    }
+    
+    class Report {
+        -int reportID
+        -string type
+        -date startDate
+        -date endDate
+        -string format
+        +generate()
+        +view()
+        +export()
+    }
+    
+    class SpendingAnalysis {
+        -int analysisID
+        -list~string~ patterns
+        +generateInsights()
+        +suggestSavings()
+        +provideBudgetSuggestions()
+    }
+    
+    class Reward {
+        -int rewardID
+        -int points
+        -string type
+        +issue()
+        +track()
+        +redeem()
+    }
+    
+    class AlertNotification {
+        -string severity
+        -bool requiresAction
+        +sendAlert()
+        +escalate()
+    }
+    
+    class ReminderNotification {
+        -date dueDate
+        -bool recurring
+        +schedule()
+        +snooze()
+    }
+    
+    class AchievementNotification {
+        -string milestone
+        -int progressPercentage
+        +celebrate()
+        +shareAchievement()
+    }
+    
+    class BankConnection {
+        -string bankName
+        -string accountNumber
+        -string connectionStatus
+        +connect()
+        +sync()
+        +disconnect()
+    }
+    
+    class NotificationService {
+        -string serviceType
+        -list~string~ channels
+        +deliverNotification()
+        +scheduleNotification()
+    }
+    
+    class RewardsProvider {
+        -string name
+        -list~string~ partnerBrands
+        +issueRewards()
+        +trackPoints()
+    }
+    
+    %% Interface
+    class PaymentProcessor {
+        <<interface>>
+        +processPayment()
+        +refundPayment()
+        +generateReceipt()
+    }
+    
+    %% Relationships
+    %% Inheritance
+    Account <|-- User
+    Account <|-- FinancialAdvisor
+    FinancialEntity <|-- Expense
+    FinancialEntity <|-- Income
+    Budget <|-- RecurringBudget
+    NotificationMessage <|-- AlertNotification
+    NotificationMessage <|-- ReminderNotification
+    NotificationMessage <|-- AchievementNotification
+    
+    %% Realization (Implementation)
+    PaymentProcessor <|.. Transaction
+    
+    %% Association
+    User "1" -- "1" Authentication : authenticates through >
+    User "1" -- "*" Report : views >
+    FinancialAdvisor "1" -- "*" SpendingAnalysis : creates >
+    
+    %% Composition (Strong Ownership)
+    User "1" *-- "*" FinancialGoal : sets and owns
+    User "1" *-- "1" SpendingAnalysis : possesses
+    
+    %% Aggregation (Weak Ownership)
+    User "1" o-- "*" Category : manages
+    Budget "1" o-- "*" Expense : contains
+    
+    %% Dependency
+    Expense ..> Category : depends on >
+    SpendingAnalysis ..> Transaction : analyzes >
+    Report ..> Transaction : includes >
+    Report ..> Budget : references >
+    FinancialGoal ..> Budget : tracks against >
+    
+    %% More Complex Relationships
+    BankConnection "1" -- "*" Transaction : imports >
+    RewardsProvider "1" -- "*" Reward : provides >
+    NotificationService "1" -- "*" NotificationMessage : delivers >
+    Transaction "1" -- "0..1" Expense : generates >
+    Transaction "1" -- "0..1" Income : generates >
+    User "1" o-- "*" Reward : earns
+    User "1" o-- "*" NotificationMessage : receives
