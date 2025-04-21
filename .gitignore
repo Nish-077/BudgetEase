@@ -1,7 +1,10 @@
 *.png
 *.jpg
 *.drawio
-*.mmdHELP.md
+*.mmd
+*.xml
+
+HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
