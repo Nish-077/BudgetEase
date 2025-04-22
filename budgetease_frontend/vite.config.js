@@ -8,4 +8,14 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  define:{
+    global:'window'
+  }
+  // server:{
+  //   hmr:{
+  //     protocol:'ws',
+  //     host:'localhost',
+  //     port:5173
+  //   }
+  // }
 })

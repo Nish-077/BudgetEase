@@ -41,7 +41,9 @@ const ViewGoals = () => {
       setProgressLoading(true);
       setProgressError("");
       try {
-        const response = await getProgress(selectedGoal.goalId,"goal");
+        const response = await getProgress(selectedGoal.goalId, "goal");
+        console.log("PROGRESS in VIEWGOAL: ",response);
+        
         setProgress(response.progress);
       } catch (err) {
         setProgressError("Failed to load goal progress.");
@@ -58,7 +60,7 @@ const ViewGoals = () => {
     <DashboardLayout>
       <div className="flex-1 p-6 overflow-auto bg-gradient-to-br from-purple-50 to-pink-100">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
-          
+
           <div className="bg-white rounded-2xl shadow-lg p-6 lg:col-span-1 overflow-y-auto">
             <h2 className="text-2xl font-bold text-purple-600 mb-6">Your Goals</h2>
 
@@ -78,8 +80,8 @@ const ViewGoals = () => {
             ) : goals.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
                 <p>No goals found</p>
-                <button 
-                  onClick={() => navigate("/create-goal")} 
+                <button
+                  onClick={() => navigate("/create-goal")}
                   className="mt-4 text-purple-600 hover:text-purple-800 font-medium"
                 >
                   Set your first goal
@@ -137,6 +139,10 @@ const ViewGoals = () => {
                     </div>
                   ) : progressError ? (
                     <p className="text-red-500 text-sm">{progressError}</p>
+                  ) : progress >= 100 ? (
+                    <div className="p-3 bg-green-100 text-green-700 rounded-lg">
+                      🎉 Goal Completed!
+                    </div>
                   ) : (
                     <>
                       <div className="w-full bg-gray-200 rounded-full h-4">

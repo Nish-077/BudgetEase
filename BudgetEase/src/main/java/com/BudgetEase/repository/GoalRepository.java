@@ -7,5 +7,5 @@ import com.BudgetEase.Models.TargetStatus;
 
 public interface GoalRepository extends MongoRepository<Goal,String> { 
     public Goal findByName(String name);
-    long countByUserIdAndStatus(String userId, TargetStatus status);
+    // long countByUserIdAndStatus(String userId, TargetStatus status);
 }

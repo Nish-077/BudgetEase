@@ -14,11 +14,16 @@ On top of this, make an abstract class which Budget and Goal inherits from.
 
 REWARDS -
 
-grant 10 points for adding budget/goal.
-grant 25 points for adding transaction
+grant 10 points for adding budget/goal //This works properly
+grant 25 points for adding transaction //This works properly
 grant 50 points for 20 transactions.
 grant 100 points for completion of budget/goal and BRONZE badge.
 
 grant SILVER badge for completing budget/goal before due date.
 grant GOLD badge for completing 5 budgets/goals.
 
+
+NOW, THERE SHOULD BE ONE SILVER BADGE AND ONE BRONZE BADGE. - THERE ARE 2?
+THERE SHOULD BE 100 POINTS ADDED TO POINTS - POINTS 100 GETS ADDED ALSO TWICE?
+REWARD ACCOUNT MUST HAVE BOTH THE ABOVE ADDED TO IT. - REWARD ACC HAS 25 FOR TRANSACTION BUT TWO COMPOSITE ONES
+COMPOSITE ALSO HAS IT TWICE FOR THE SAME EVENT.

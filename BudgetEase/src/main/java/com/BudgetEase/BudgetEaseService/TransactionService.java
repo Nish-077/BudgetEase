@@ -8,6 +8,8 @@ import org.springframework.transaction.NoTransactionException;
 
 import com.BudgetEase.Models.Budget;
 import com.BudgetEase.Models.Goal;
+import com.BudgetEase.Models.NotificationLevel;
+import com.BudgetEase.Models.NotificationType;
 import com.BudgetEase.Models.Transaction;
 import com.BudgetEase.Models.TransactionType;
 import com.BudgetEase.Models.User;
@@ -25,17 +27,20 @@ public class TransactionService {
     GoalRepository goalRepository;
     UserService userService;
     RewardService rewardService;
+    NotificationService notificationService;
 
     public TransactionService(TransactionRepository transactionRepository,
                           BudgetRepository budgetRepository,
                           GoalRepository goalRepository,
                           UserService userService,
-                          RewardService rewardService) {
+                          RewardService rewardService,
+                          NotificationService notificationService) {
         this.transactionRepository = transactionRepository;
         this.budgetRepository = budgetRepository;
         this.goalRepository = goalRepository;
         this.userService = userService;
         this.rewardService=rewardService;
+        this.notificationService=notificationService;
     }
 
     public Transaction addTransactionToBudget(Transaction transaction, String budgetId) throws IllegalArgumentException{
@@ -115,6 +120,8 @@ public class TransactionService {
             rewardService.rewardForTwentyTransactions(user.getUserId());
         }
 
+        notificationService.createNotification("TRANSACTION CREATED", NotificationType.TRANSACTION_ADDED, NotificationLevel.SUCCESS);
+
         rewardService.rewardForAddingTransaction(user.getUserId());
         return transactionRepository.save(transaction);
     }
@@ -145,6 +152,7 @@ public class TransactionService {
         transactions.forEach( (transaction) -> {
             transaction.setUserId(getCurrentUser.obtainUser().getUserId());
             transactionRepository.save(transaction);
+            notificationService.createNotification("NOTIF VIA IMAGE CREATED!", NotificationType.TRANSACTION_ADDED, NotificationLevel.SUCCESS);
         } );
 
         return transactions;

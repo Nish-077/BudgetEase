@@ -75,7 +75,7 @@ const CreateGoal = () => {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-gray-700">Category Name</label>
               <input
                 type="text"
@@ -96,7 +96,7 @@ const CreateGoal = () => {
                 rows="3"
                 className="w-full text-black mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
-            </div>
+            </div> */}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -137,7 +137,7 @@ const CreateGoal = () => {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-gray-700">Reward Points</label>
               <input
                 type="number"
@@ -147,7 +147,7 @@ const CreateGoal = () => {
                 required
                 className="w-full text-black mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
-            </div>
+            </div> */}
 
             <button
               type="submit"

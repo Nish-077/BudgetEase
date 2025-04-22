@@ -4,6 +4,8 @@ package com.BudgetEase.BudgetEaseService;
 import com.BudgetEase.Exceptions.InvalidUserCredentialsException;
 import com.BudgetEase.Exceptions.UserAlreadyExistsException;
 import com.BudgetEase.Models.Budget;
+import com.BudgetEase.Models.Notification;
+import com.BudgetEase.Models.TargetStatus;
 import com.BudgetEase.Models.User;
 import com.BudgetEase.repository.UserRepository;
 import com.BudgetEase.utils.GetCurrentUser;
@@ -202,5 +204,43 @@ public class UserService {
 
     public User findUserByEmailOrUserName(String email,String username){
         return repository.findByEmailOrUserName(email,username);
+    }
+
+    public long countCompletedBudgets(String userId){
+        User user = repository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        long completedCount = user.getBudgets().stream()
+                          .filter(budget -> budget.getTargetStatus() == TargetStatus.COMPLETED)
+                          .count();
+        
+        return completedCount;
+    }
+
+    public long countCompletedGoals(String userId){
+        User user = repository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        long completedCount = user.getGoals().stream()
+                          .filter(goal -> goal.getTargetStatus() == TargetStatus.COMPLETED)
+                          .count();
+        
+        return completedCount;
+    }
+
+    public User addNotificationToUser(String userId, Notification notification) {
+        // Retrieve the user
+        User user = repository.findByUserId(userId);
+
+        if(user.getNotifications() == null){
+            user.setNotifications(new ArrayList<>());
+        }
+
+        // Add the notification to the user's list
+        user.getNotifications().add(notification);
+
+        // Save the updated user
+        return repository.save(user);
+    }
+
+    public List<Notification> getNotificationsByUserId(String userId) {
+        User user = repository.findByUserId(userId);  // Retrieve user by ID
+        return user.getNotifications();  // Return notifications list
     }
 }

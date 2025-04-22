@@ -19,6 +19,7 @@ public abstract class FinancialTarget {
     protected int rewardPoints;
     protected TargetStatus targetStatus;
     protected long noOfTimesCompleted;
+    protected double progress;
 
     public boolean isActiveOn(LocalDateTime date) {
         return (startDate != null && endDate != null) &&

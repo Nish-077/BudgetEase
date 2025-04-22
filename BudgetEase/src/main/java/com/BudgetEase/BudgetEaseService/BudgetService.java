@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.BudgetEase.Models.Budget;
+import com.BudgetEase.Models.NotificationLevel;
+import com.BudgetEase.Models.NotificationType;
 import com.BudgetEase.dtos.BudgetCreate;
 import com.BudgetEase.repository.BudgetRepository;
 import com.BudgetEase.utils.GetCurrentUser;
@@ -15,11 +17,13 @@ public class BudgetService {
     private BudgetRepository budgetRepository;
     private UserService userService;
     private RewardService rewardService;
+    private NotificationService notificationService;
 
-    public BudgetService(BudgetRepository budgetRepository, UserService userService, RewardService rewardService){
+    public BudgetService(BudgetRepository budgetRepository, UserService userService, RewardService rewardService, NotificationService notificationService){
         this.budgetRepository=budgetRepository;
         this.userService=userService;
         this.rewardService=rewardService;
+        this.notificationService=notificationService;
     }
 
     public Budget createBudget(BudgetCreate createBudget){
@@ -36,6 +40,8 @@ public class BudgetService {
 
         rewardService.rewardForAddingBudgetOrGoal(getCurrentUser.obtainUser().getUserId());
         budgetRepository.save(budget);
+
+        notificationService.createNotification("BUDGET SET", NotificationType.BUDGET_SET, NotificationLevel.SUCCESS);
 
         return userService.addBudget(budget, getCurrentUser.obtainUser().getUserId());
     }

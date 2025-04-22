@@ -47,13 +47,13 @@ public class FinancialTargetController {
             return ResponseEntity.status(404).body(new ApiResponse("Financial target not found"));
         }
 
-        Boolean early = false;
+        // Boolean early = false;
 
-        if(LocalDateTime.now().isBefore(target.getEndDate())){
-            early=true;
-        }
+        // if(LocalDateTime.now().isBefore(target.getEndDate())){
+        //     early=true;
+        // }
 
-        double progress = financialTargetService.calculateProgress(target,early,getCurrentUser.obtainUser().getUserId());
+        double progress = financialTargetService.calculateProgress(target,getCurrentUser.obtainUser().getUserId());
         HashMap<String, Double> map = new HashMap<>();
         map.put("progress", progress);
         return ResponseEntity.ok(map);

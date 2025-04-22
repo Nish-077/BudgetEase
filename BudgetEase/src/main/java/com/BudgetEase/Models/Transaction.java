@@ -34,7 +34,7 @@ public class Transaction {
     @NotNull
     private LocalDateTime date;
 
-    @NotBlank
+    // @NotBlank
     private String description;
 
     @NotBlank

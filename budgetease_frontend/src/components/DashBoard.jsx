@@ -1,8 +1,27 @@
 import { useNavigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode"; // Import jwt-decode
+import { useState, useEffect } from "react";
 
 const DashboardLayout = ({ children }) => {
     const navigate = useNavigate();
-  
+    const [userId, setUserId] = useState(null); // Initially null
+
+    useEffect(() => {
+        const token = localStorage.getItem("jwt");
+
+        if (token) {
+            try {
+                // Decode the JWT to get user data
+                const decodedToken = jwtDecode(token);
+                setUserId(decodedToken.sub); // Assuming the userId is part of the JWT payload
+            } catch (err) {
+                console.error("Invalid JWT token", err);
+            }
+        } else {
+            setUserId(null); // Set to null if there's no token
+        }
+    }, []);
+
     return (
       <div className="flex h-screen w-full bg-gradient-to-br from-blue-50 to-indigo-100">
         {/* Sidebar */}
@@ -75,6 +94,19 @@ const DashboardLayout = ({ children }) => {
               >
                 View Transactions
               </button>
+              <button
+                onClick={() => navigate(`/view-rewards`)} // Passing userId in the route
+                className="w-full text-left text-indigo-600 hover:text-indigo-800 font-medium transition"
+                disabled={!userId} // Disable until userId is available
+              >
+                View Rewards
+              </button>
+              <button
+                onClick={() => navigate(`/view-notifications`)} // Passing userId in the route
+                className="w-full text-left text-indigo-600 hover:text-indigo-800 font-medium transition"
+              >
+                View Notifications
+              </button>
             </nav>
           </div>
           <button
@@ -94,7 +126,6 @@ const DashboardLayout = ({ children }) => {
         </div>
       </div>
     );
-  };
-  
-  export default DashboardLayout;
-  
+};
+
+export default DashboardLayout;

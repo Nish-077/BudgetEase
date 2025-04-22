@@ -19,7 +19,7 @@ public class GoalOverdueStrategy implements OverdueStrategy {
     public boolean isOverdue(FinancialTarget financialTarget){
         Goal goal = (Goal) financialTarget;
 
-        return transactionService.getCurrentGain(goal.getGoalId()) < goal.getTargetAmount() && goal.isActiveOn(LocalDateTime.now());
+        return transactionService.getCurrentGain(goal.getGoalId()) < goal.getTargetAmount() && !goal.isActiveOn(LocalDateTime.now());
 
     }
 }

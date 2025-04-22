@@ -190,7 +190,7 @@ const CreateTransaction = () => {
                   className="w-full text-black mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
-
+{/* 
               <div>
                 <label className="block text-gray-700">Description</label>
                 <textarea
@@ -200,7 +200,7 @@ const CreateTransaction = () => {
                   rows="3"
                   className="w-full text-black mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
-              </div>
+              </div> */}
 
               <button
                 type="submit"

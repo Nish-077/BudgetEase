@@ -32,5 +32,7 @@ public class User {
     private List<Notification> notifications;
     @DBRef
     private List<Budget> budgets;
+    @DBRef
+    private List<Goal> goals;
 
 }

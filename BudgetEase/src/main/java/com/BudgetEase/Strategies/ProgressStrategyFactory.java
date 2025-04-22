@@ -21,18 +21,19 @@ public class ProgressStrategyFactory {
     @Autowired
     private GoalProgressStrategy goalProgressStrategy;
 
-    private BudgetRepository budgetRepository;
-    private GoalRepository goalRepository;
+    // private BudgetRepository budgetRepository;
+    // private GoalRepository goalRepository;
+
+    // public ProgressStrategyFactory(GoalRepository goalRepository, BudgetRepository budgetRepository){
+    //     this.goalRepository=goalRepository;
+    //     this.budgetRepository=budgetRepository;
+    // }
 
     public ProgressStrategy getProgressStrategy(FinancialTarget financialTarget){
         if(financialTarget instanceof Budget) {
-            Budget budget = (Budget)financialTarget;
-            budgetRepository.save(budget);
             return budgetProgressStrategy;
         }
         if(financialTarget instanceof Goal) {
-            Goal goal = (Goal) financialTarget;
-            goalRepository.save(goal);
             return goalProgressStrategy;
         }
 

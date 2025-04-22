@@ -168,8 +168,8 @@ const ViewBudgets = () => {
                   ) : progressError ? (
                     <p className="text-red-500 text-sm">{progressError}</p>
                   ) :overdueMap[selectedBudget.budgetId] ? (
-                    <div className="p-3 bg-red-100 text-red-700 rounded-lg">
-                      ⚠️ This budget is overdue.
+                    <div className="p-3 bg-red-100 text-geen-700 rounded-lg">
+                      This budget is Completed.
                     </div>
                   ): (
                     <>

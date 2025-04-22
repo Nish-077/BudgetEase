@@ -19,7 +19,7 @@ public class BudgetOverdueStrategy implements OverdueStrategy {
     public boolean isOverdue(FinancialTarget financialPlan){
         Budget budget = (Budget) financialPlan;
 
-        return transactionService.getCurrentSpending(budget.getBudgetId()) > budget.getAllocatedAmount() && budget.isActiveOn(LocalDateTime.now());
+        return transactionService.getCurrentSpending(budget.getBudgetId()) >= budget.getAllocatedAmount() && budget.isActiveOn(LocalDateTime.now());
     }
 
 }

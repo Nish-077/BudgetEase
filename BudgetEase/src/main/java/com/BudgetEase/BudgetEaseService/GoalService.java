@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.BudgetEase.Models.Goal;
+import com.BudgetEase.Models.NotificationLevel;
+import com.BudgetEase.Models.NotificationType;
 import com.BudgetEase.repository.GoalRepository;
 import com.BudgetEase.utils.GetCurrentUser;
 
@@ -14,11 +16,13 @@ public class GoalService {
     private GoalRepository goalRepository;
     private RewardService rewardService;
     private UserService userService;
+    private NotificationService notificationService;
 
-    public GoalService(GoalRepository goalRepository, RewardService rewardService, UserService userService){
+    public GoalService(GoalRepository goalRepository, RewardService rewardService, UserService userService, NotificationService notificationService){
         this.goalRepository=goalRepository;
         this.rewardService=rewardService;
         this.userService=userService;
+        this.notificationService=notificationService;
     }
 
     public List<Goal> getAllGoals(){
@@ -28,6 +32,7 @@ public class GoalService {
     public Goal createGoal(Goal goal){
         GetCurrentUser getCurrentUser = new GetCurrentUser(userService);
         rewardService.rewardForAddingBudgetOrGoal(getCurrentUser.obtainUser().getUserId());
+        notificationService.createNotification("GOAL HAS BEEN SET", NotificationType.GOAL_SET, NotificationLevel.SUCCESS);
         return goalRepository.save(goal);
     }
 

@@ -58,73 +58,92 @@ public class RewardService {
     // Grant reward for adding budget or goal
     public Reward rewardForAddingBudgetOrGoal(String userId) {
         Reward reward = savePointReward(createPointReward("Added Budget/Goal", 10));
-        PointBasedReward pointBasedReward = (PointBasedReward) reward;
-        int totalpoints = pointBasedReward.getPointsRequired();
-        applyRewardToUser(userId, reward, totalpoints);
+        applyRewardToUser(userId, reward);
         return reward;
     }
 
     // Grant reward for adding transaction
     public Reward rewardForAddingTransaction(String userId) {
         Reward reward = savePointReward(createPointReward("Added Transaction", 25));
-        PointBasedReward pointBasedReward = (PointBasedReward) reward;
-        int totalpoints = pointBasedReward.getPointsRequired();
-        applyRewardToUser(userId, reward,totalpoints);
+        applyRewardToUser(userId, reward);
         return reward;
     }
 
     // Grant reward for reaching milestone of 5 transactions
     public Reward rewardForTwentyTransactions(String userId) {
         Reward reward = savePointReward(createPointReward("Milestone: 20 Transactions", 50));
-        PointBasedReward pointBasedReward = (PointBasedReward) reward;
-        int totalpoints = pointBasedReward.getPointsRequired();
-        applyRewardToUser(userId, reward,totalpoints);
+        applyRewardToUser(userId, reward);
         return reward;
     }
 
     // Grant reward for completing budget or goal, possibly with early completion and 5 goals
+// public Reward rewardForBudgetGoalCompletion(String userId, boolean early, boolean fiveCompleted) {
+//     List<Reward> rewards = new ArrayList<>();
+
+//     // Add completion reward (100 points) and Bronze Badge
+//     rewards.add(createPointReward("Completion Reward", 100));
+//     rewards.add(createBadgeReward("Completion", BadgeLevel.BRONZE));
+
+//     // Add Silver Badge for early completion
+//     if (early) {
+//         rewards.add(createBadgeReward("Early Completion", BadgeLevel.SILVER));
+//     }
+
+//     // Add Gold Badge for completing 5 goals
+//     if (fiveCompleted) {
+//         rewards.add(createBadgeReward("Master Finisher", BadgeLevel.GOLD));
+//     }
+
+//     // Save all individual rewards first
+//     List<Reward> savedRewards = new ArrayList<>();
+//     for (Reward reward : rewards) {
+//         if (reward instanceof PointBasedReward) {
+//             Reward saved = savePointReward((PointBasedReward) reward);
+//             savedRewards.add(saved);
+//             applyRewardToUser(userId, saved);   // Apply the reward to user's RewardAccount
+//         } else if (reward instanceof BadgeReward) {
+//             Reward saved = saveBadgeReward((BadgeReward) reward);
+//             savedRewards.add(saved);
+//             applyRewardToUser(userId, saved);   // Apply the reward to user's RewardAccount
+//         }
+//     }
+
+//     // Save the composite reward that groups them
+//     Reward composite = saveCompositeReward(createCompositeReward(savedRewards));
+
+//     applyRewardToUser(userId, composite);  // Apply the composite reward to the user too
+
+//     return composite;
+// }
+
 public Reward rewardForBudgetGoalCompletion(String userId, boolean early, boolean fiveCompleted) {
     List<Reward> rewards = new ArrayList<>();
 
-    // Add completion reward (100 points) and Bronze Badge
+    // Create rewards
     rewards.add(createPointReward("Completion Reward", 100));
     rewards.add(createBadgeReward("Completion", BadgeLevel.BRONZE));
+    if (early) rewards.add(createBadgeReward("Early Completion", BadgeLevel.SILVER));
+    if (fiveCompleted) rewards.add(createBadgeReward("Master Finisher", BadgeLevel.GOLD));
 
-    // Add Silver Badge for early completion
-    if (early) {
-        rewards.add(createBadgeReward("Early Completion", BadgeLevel.SILVER));
-    }
-
-    // Add Gold Badge for completing 5 goals
-    if (fiveCompleted) {
-        rewards.add(createBadgeReward("Master Finisher", BadgeLevel.GOLD));
-    }
-
-    // Save all individual rewards first
+    // Save all rewards (but don't apply them individually)
     List<Reward> savedRewards = new ArrayList<>();
     for (Reward reward : rewards) {
         if (reward instanceof PointBasedReward) {
-            Reward saved = savePointReward((PointBasedReward) reward);
-            PointBasedReward pointBasedReward = (PointBasedReward) saved;
-            int totalpoints = pointBasedReward.getPointsRequired();
-            savedRewards.add(saved);
-            applyRewardToUser(userId, saved,totalpoints);   // Apply the reward to user's RewardAccount
+            savedRewards.add(savePointReward((PointBasedReward) reward));
         } else if (reward instanceof BadgeReward) {
-            Reward saved = saveBadgeReward((BadgeReward) reward);
-            savedRewards.add(saved);
-            applyRewardToUser(userId, saved,0);   // Apply the reward to user's RewardAccount
+            savedRewards.add(saveBadgeReward((BadgeReward) reward));
         }
     }
 
-    // Save the composite reward that groups them
+    // Save composite reward and apply it to user only
     Reward composite = saveCompositeReward(createCompositeReward(savedRewards));
-
-    applyRewardToUser(userId, composite,0);  // Apply the composite reward to the user too
+    applyRewardToUser(userId, composite);
 
     return composite;
 }
 
-    public void applyRewardToUser(String userId, Reward reward, int points) {
+
+    public void applyRewardToUser(String userId, Reward reward) {
         Optional<RewardAccount> optionalAccount = rewardAccountRepository.findById(userId);
 
         RewardAccount account = optionalAccount.orElseGet(() ->
@@ -133,13 +152,17 @@ public Reward rewardForBudgetGoalCompletion(String userId, boolean early, boolea
             new RewardAccount(null, 0, userId, new ArrayList<>())
         );
 
-        if (reward instanceof PointBasedReward) {
-            account.setTotalPoints(account.getTotalPoints() + ((PointBasedReward) reward).getPointsRequired());
-        }
+        // if (reward instanceof PointBasedReward) {
+        //     account.setTotalPoints(account.getTotalPoints() + ((PointBasedReward) reward).getPointsRequired());
+        // }
 
         account.getRewards().add(reward);
 
         rewardAccountRepository.save(account);
+    }
+
+    public List<RewardAccount> getAccountByUserId(String userId){
+        return rewardAccountRepository.findByUserId(userId);
     }
 
 }

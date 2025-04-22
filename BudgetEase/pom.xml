@@ -55,6 +55,24 @@
 			<version>5.2</version>
 		</dependency> -->
 
+		<!-- WebSocket & STOMP support -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
+		<!-- If you don't have it already: -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>sockjs-client</artifactId>
+			<version>1.5.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>stomp-websocket</artifactId>
+			<version>2.3.4</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.google.api-client</groupId>
