@@ -120,7 +120,7 @@ public class TransactionController {
             return ResponseEntity.status(500).body(new ApiResponse("Transaction cannot be updated"));
         }
 
-        return ResponseEntity.ok(new ApiResponse("Transaction updated"));
+        return ResponseEntity.ok(updatedTransaction);
     }
 
     @GetMapping("/getTransactions")
@@ -150,7 +150,7 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionsByBudgetId(budgetId));
     }
 
-    @GetMapping("/getTransactionsByBudgetId/{goalId}")
+    @GetMapping("/getTransactionsByGoalId/{goalId}")
     public ResponseEntity<?> getTransactionsByGoalId(@PathVariable String goalId){
         return ResponseEntity.ok(transactionService.getTransactionsByGoalId(goalId));
     }

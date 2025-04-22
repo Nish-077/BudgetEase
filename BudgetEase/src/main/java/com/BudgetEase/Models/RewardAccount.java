@@ -17,13 +17,14 @@ public class RewardAccount {
     @Id
     private String accountId;
     private int totalPoints;
+    private String userId;
 
-    @DBRef
-    private List<RewardTransaction> transactions;
+    // @DBRef
+    // private List<RewardTransaction> transactions;
     @DBRef
     private List<Reward> rewards;
 
-    public void addTransaction(RewardTransaction transaction) {
-        this.transactions.add(transaction);
-    }
+    // public void addTransaction(RewardTransaction transaction) {
+    //     this.transactions.add(transaction);
+    // }
 }

@@ -11,15 +11,12 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @Document(collection = "point-rewards")
-public class PointBasedReward implements Reward {
+public class PointBasedReward extends Reward {
 
     @Id
     private String rewardId;
     private String rewardName;
-    private String description;
     private int pointsRequired;
-    private String iconUrl;
-    private LocalDateTime earnedAt;
 
     @Override
     public String getRewardType() {

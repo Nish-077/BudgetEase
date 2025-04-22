@@ -24,15 +24,18 @@ public class TransactionService {
     BudgetRepository budgetRepository;
     GoalRepository goalRepository;
     UserService userService;
+    RewardService rewardService;
 
     public TransactionService(TransactionRepository transactionRepository,
                           BudgetRepository budgetRepository,
                           GoalRepository goalRepository,
-                          UserService userService) {
+                          UserService userService,
+                          RewardService rewardService) {
         this.transactionRepository = transactionRepository;
         this.budgetRepository = budgetRepository;
         this.goalRepository = goalRepository;
         this.userService = userService;
+        this.rewardService=rewardService;
     }
 
     public Transaction addTransactionToBudget(Transaction transaction, String budgetId) throws IllegalArgumentException{
@@ -102,6 +105,17 @@ public class TransactionService {
     }
 
     public Transaction createTransaction(Transaction transaction){
+        GetCurrentUser getCurrentUser = new GetCurrentUser(userService);
+
+        User user = getCurrentUser.obtainUser();
+
+        long count = transactionRepository.countByUserId(user.getUserId());
+
+        if(count==19){
+            rewardService.rewardForTwentyTransactions(user.getUserId());
+        }
+
+        rewardService.rewardForAddingTransaction(user.getUserId());
         return transactionRepository.save(transaction);
     }
 
@@ -144,17 +158,17 @@ public class TransactionService {
 
         Transaction existingTransaction = transactionRepository.findById(transactionId).orElseThrow( () -> new IllegalArgumentException("Transaction not found") );
 
-        Transaction finalTransaction = Transaction.builder()
-            .transactionId(transactionId)
-            .amount(updatedTransaction.getAmount())
-            .date(updatedTransaction.getDate())
-            .description(updatedTransaction.getDescription())
-            .merchant(updatedTransaction.getMerchant())
-            .type(updatedTransaction.getType())
-            .status(updatedTransaction.getPaymentStatus())
-            .build();
+        existingTransaction.setTransactionId(transactionId);
+        existingTransaction.setAmount(updatedTransaction.getAmount());
+        existingTransaction.setDate(updatedTransaction.getDate());
+        existingTransaction.setDescription(updatedTransaction.getDescription());
+        existingTransaction.setGoalId(updatedTransaction.getGoalId());
+        existingTransaction.setBudgetId(updatedTransaction.getBudgetId());
+        existingTransaction.setMerchant(updatedTransaction.getMerchant());
+        existingTransaction.setStatus(updatedTransaction.getPaymentStatus());
+        existingTransaction.setType(updatedTransaction.getType());
         
-        return finalTransaction;
+        return transactionRepository.save(existingTransaction);
     }
 
     public List<Transaction> getTransactionsByBudgetId(String budgetId){

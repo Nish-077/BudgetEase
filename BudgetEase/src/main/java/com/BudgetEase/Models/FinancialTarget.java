@@ -17,6 +17,8 @@ public abstract class FinancialTarget {
     protected LocalDateTime startDate;
     protected LocalDateTime endDate;
     protected int rewardPoints;
+    protected TargetStatus targetStatus;
+    protected long noOfTimesCompleted;
 
     public boolean isActiveOn(LocalDateTime date) {
         return (startDate != null && endDate != null) &&

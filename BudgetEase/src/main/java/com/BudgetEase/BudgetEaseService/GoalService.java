@@ -6,14 +6,19 @@ import org.springframework.stereotype.Service;
 
 import com.BudgetEase.Models.Goal;
 import com.BudgetEase.repository.GoalRepository;
+import com.BudgetEase.utils.GetCurrentUser;
 
 @Service
 public class GoalService {
 
     private GoalRepository goalRepository;
+    private RewardService rewardService;
+    private UserService userService;
 
-    public GoalService(GoalRepository goalRepository){
+    public GoalService(GoalRepository goalRepository, RewardService rewardService, UserService userService){
         this.goalRepository=goalRepository;
+        this.rewardService=rewardService;
+        this.userService=userService;
     }
 
     public List<Goal> getAllGoals(){
@@ -21,6 +26,8 @@ public class GoalService {
     }
 
     public Goal createGoal(Goal goal){
+        GetCurrentUser getCurrentUser = new GetCurrentUser(userService);
+        rewardService.rewardForAddingBudgetOrGoal(getCurrentUser.obtainUser().getUserId());
         return goalRepository.save(goal);
     }
 

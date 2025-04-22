@@ -33,9 +33,11 @@ const CreateBudget = () => {
         startDate: new Date(form.startDate).toISOString(),
         endDate: new Date(form.endDate).toISOString()
       };
-      await createBudget(payload);
+      const response = await createBudget(payload);
+      console.log("BUDGET CREATE: ",response);
+      
       alert("Budget created successfully!");
-      navigate("/budgets");
+      navigate("/view-budgets");
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Failed to create budget. Please try again.");

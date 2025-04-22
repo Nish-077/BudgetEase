@@ -11,5 +11,6 @@ public interface TransactionRepository extends MongoRepository<Transaction, Stri
     public List<Transaction> findByGoalId(String goalId);
     public List<Transaction> findByUserId(String userId); 
     public Transaction findByTransactionId(String transactionId);
+    long countByUserId(String userId);
     // public List<Transaction> findTransactionsByBudgetId(String budgetId);
 }

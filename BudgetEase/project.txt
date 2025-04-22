@@ -11,3 +11,14 @@ Instead, add a category field in Budget and have Transaction belong to Budget to
 
 On top of this, make an abstract class which Budget and Goal inherits from.
 
+
+REWARDS -
+
+grant 10 points for adding budget/goal.
+grant 25 points for adding transaction
+grant 50 points for 20 transactions.
+grant 100 points for completion of budget/goal and BRONZE badge.
+
+grant SILVER badge for completing budget/goal before due date.
+grant GOLD badge for completing 5 budgets/goals.
+

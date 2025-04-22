@@ -14,10 +14,12 @@ public class BudgetService {
 
     private BudgetRepository budgetRepository;
     private UserService userService;
+    private RewardService rewardService;
 
-    public BudgetService(BudgetRepository budgetRepository, UserService userService){
+    public BudgetService(BudgetRepository budgetRepository, UserService userService, RewardService rewardService){
         this.budgetRepository=budgetRepository;
         this.userService=userService;
+        this.rewardService=rewardService;
     }
 
     public Budget createBudget(BudgetCreate createBudget){
@@ -32,6 +34,7 @@ public class BudgetService {
         budget.setEndDate(createBudget.getEndDate());
         budget.setName(createBudget.getName());
 
+        rewardService.rewardForAddingBudgetOrGoal(getCurrentUser.obtainUser().getUserId());
         budgetRepository.save(budget);
 
         return userService.addBudget(budget, getCurrentUser.obtainUser().getUserId());

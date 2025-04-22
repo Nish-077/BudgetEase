@@ -1,6 +1,7 @@
 package com.BudgetEase.dtos;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.BudgetEase.Models.PaymentStatus;
 import com.BudgetEase.Models.TransactionType;
@@ -38,4 +39,8 @@ public class TransactionUpdate {
     // @NotBlank(message = "Merchant name cannot be blank")
     @Size(max = 100, message = "Merchant name cannot exceed 100 characters")
     private String merchant;
+
+    private List<String> goalId;
+
+    private List<String> budgetId;
 }

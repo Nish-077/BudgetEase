@@ -87,19 +87,19 @@ const ViewTransactionsByBudgetId = () => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-green-100 text-green-700">
-                    <th className="p-3">Date</th>
-                    <th className="p-3">Description</th>
-                    <th className="p-3">Amount</th>
-                    <th className="p-3">Attachment</th>
+                    <th className="text-black p-3">Date</th>
+                    <th className="text-black p-3">Description</th>
+                    <th className="text-black p-3">Amount</th>
+                    <th className="text-black p-3">Attachment</th>
                   </tr>
                 </thead>
                 <tbody>
                   {transactions.map((txn) => (
                     <tr key={txn.transactionId} className="hover:bg-gray-50 border-b">
-                      <td className="p-3">{new Date(txn.date).toLocaleDateString()}</td>
-                      <td className="p-3">{txn.description || "-"}</td>
-                      <td className="p-3 text-green-600 font-semibold">${txn.amount}</td>
-                      <td className="p-3">
+                      <td className="text-black p-3">{new Date(txn.date).toLocaleDateString()}</td>
+                      <td className="text-black p-3">{txn.description || "-"}</td>
+                      <td className="p-3 text-black font-semibold">${txn.amount}</td>
+                      <td className="text-black p-3">
                         {txn.attachmentUrl ? (
                           <a
                             href={txn.attachmentUrl}

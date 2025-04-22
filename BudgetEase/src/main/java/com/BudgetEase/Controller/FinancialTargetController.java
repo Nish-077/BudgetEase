@@ -1,7 +1,10 @@
 package com.BudgetEase.Controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
+import org.checkerframework.checker.units.qual.m;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.BudgetEase.BudgetEaseService.BudgetService;
 import com.BudgetEase.BudgetEaseService.FinancialTargetService;
 import com.BudgetEase.BudgetEaseService.GoalService;
+import com.BudgetEase.BudgetEaseService.UserService;
 import com.BudgetEase.Models.FinancialTarget;
 import com.BudgetEase.utils.ApiResponse;
+import com.BudgetEase.utils.GetCurrentUser;
 
 @RestController
 @RequestMapping("/api/financial-target")
@@ -21,22 +26,34 @@ public class FinancialTargetController {
     private final FinancialTargetService financialTargetService;
     private final BudgetService budgetService;
     private final GoalService goalService;
+    private final UserService userService;
 
-    public FinancialTargetController(FinancialTargetService financialTargetService, BudgetService budgetService, GoalService goalService) {
+    public FinancialTargetController(FinancialTargetService financialTargetService, BudgetService budgetService, GoalService goalService, UserService userService) {
         this.financialTargetService = financialTargetService;
         this.budgetService = budgetService;
         this.goalService = goalService;
+        this.userService=userService;
     }
 
     // Endpoint to calculate progress for a Budget or Goal
     @GetMapping("/progress/{type}/{id}")
     public ResponseEntity<?> calculateProgress(@PathVariable String type, @PathVariable String id) {
+
+        GetCurrentUser getCurrentUser = new GetCurrentUser(userService);
+
         FinancialTarget target = getFinancialTarget(type, id);
+
         if (target == null) {
             return ResponseEntity.status(404).body(new ApiResponse("Financial target not found"));
         }
 
-        double progress = financialTargetService.calculateProgress(target);
+        Boolean early = false;
+
+        if(LocalDateTime.now().isBefore(target.getEndDate())){
+            early=true;
+        }
+
+        double progress = financialTargetService.calculateProgress(target,early,getCurrentUser.obtainUser().getUserId());
         HashMap<String, Double> map = new HashMap<>();
         map.put("progress", progress);
         return ResponseEntity.ok(map);
@@ -51,7 +68,9 @@ public class FinancialTargetController {
         }
 
         boolean isOverdue = financialTargetService.checkIfOverdue(target);
-        return ResponseEntity.ok(new ApiResponse("Is overdue: " + isOverdue));
+        HashMap<String,Boolean> map = new HashMap<>();
+        map.put("isOverdue", isOverdue);
+        return ResponseEntity.ok(map);
     }
 
     // Helper method to fetch the FinancialTarget (Budget or Goal) based on type and ID

@@ -35,7 +35,7 @@ const CreateGoal = () => {
       };
 
       await createGoal(formattedGoal);
-      navigate("/goals");
+      navigate("/view-goals");
     } catch (err) {
       console.error("Goal creation failed:", err);
       setError("Failed to create goal. Please check your input and try again.");

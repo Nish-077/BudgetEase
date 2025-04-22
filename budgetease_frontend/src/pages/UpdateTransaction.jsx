@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { updateTransaction, getTransactionById } from "../api/transactionService";
+import { getGoals } from "../api/goalService";
+import { getBudgets } from "../api/budgetService";
 import DashboardLayout from "../components/DashBoard";
 
 const UpdateTransaction = () => {
-  const { id } = useParams();  
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -15,17 +17,23 @@ const UpdateTransaction = () => {
     date: "",
     description: "",
     merchant: "",
-    status: ""
+    status: "",
+    goalId: [],
+    budgetId: []
   });
 
+  const [allGoals, setAllGoals] = useState([]);
+  const [allBudgets, setAllBudgets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [validationError, setValidationError] = useState("");
 
   useEffect(() => {
     const fetchTransaction = async () => {
       try {
         const transaction = await getTransactionById(id);
-        console.log("TRANSACTION FOUND:", transaction);
+
+        console.log("TRANSACTION: ",transaction);
 
         if (!transaction) {
           setError("Transaction not found.");
@@ -38,7 +46,9 @@ const UpdateTransaction = () => {
             date: transaction.date,
             description: transaction.description,
             merchant: transaction.merchant,
-            status: transaction.status
+            status: transaction.status,
+            goalId: transaction.goalId || [],
+            budgetId: transaction.budgetId || []
           });
         }
       } catch (err) {
@@ -52,16 +62,42 @@ const UpdateTransaction = () => {
     fetchTransaction();
   }, [id]);
 
+  useEffect(() => {
+    if (formData.type === "INCOME") {
+      getGoals().then(setAllGoals).catch(console.error);
+    } else if (formData.type === "EXPENSE") {
+      getBudgets().then(setAllBudgets).catch(console.error);
+    }
+  }, [formData.type]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleLinkedSelection = (e) => {
+    const selectedId = e.target.value;
+    if (formData.type === "INCOME") {
+      setFormData((prev) => ({ ...prev, goalId: [selectedId], budgetId: [] }));
+    } else if (formData.type === "EXPENSE") {
+      setFormData((prev) => ({ ...prev, budgetId: [selectedId], goalId: [] }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setValidationError("");
+
+    if ((formData.type === "INCOME" && formData.goalId.length === 0) ||
+        (formData.type === "EXPENSE" && formData.budgetId.length === 0)) {
+      setValidationError(`Please select a valid ${formData.type === "INCOME" ? "goal" : "budget"}.`);
+      return;
+    }
+
     try {
-      const updated = await updateTransaction(id, formData);
-      console.log("UPDATED TRANSACTION:", updated);
+      const response = await updateTransaction(id, formData);
+      console.log("UPDATED ONE: ",response);
+      
       navigate("/view-transactions");
     } catch (err) {
       console.error("Update failed:", err);
@@ -120,19 +156,49 @@ const UpdateTransaction = () => {
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-medium">Type</label>
+                  <label className="block text-gray-700 font-medium">Transaction Type</label>
                   <select
                     name="type"
                     value={formData.type}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e);
+                      setValidationError("");
+                      setFormData((prev) => ({ ...prev, goalId: [], budgetId: [] }));
+                    }}
                     required
                     className="w-full text-black mt-2 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   >
                     <option value="">Select Type</option>
-                    <option value="INCOME">Income</option>
-                    <option value="EXPENSE">Expense</option>
+                    <option value="INCOME">INCOME</option>
+                    <option value="EXPENSE">EXPENSE</option>
                   </select>
                 </div>
+
+                {formData.type && (
+                  <div>
+                    <label className="block text-gray-700 font-medium">
+                      {formData.type === "INCOME" ? "Select Goal" : "Select Budget"}
+                    </label>
+                    <select
+                      onChange={handleLinkedSelection}
+                      value={
+                        formData.type === "INCOME"
+                          ? formData.goalId[0] || ""
+                          : formData.budgetId[0] || ""
+                      }
+                      className="w-full text-black mt-2 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                      required
+                    >
+                      <option value="">-- Choose One --</option>
+                      {(formData.type === "INCOME" ? allGoals : allBudgets).map((item) => (
+                        <option key={item.goalId || item.budgetId} value={item.goalId || item.budgetId}>
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
+                    {validationError && <p className="text-red-600 mt-1">{validationError}</p>}
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-gray-700 font-medium">Status</label>

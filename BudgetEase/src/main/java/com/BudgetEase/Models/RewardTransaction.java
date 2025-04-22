@@ -11,16 +11,17 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "reward_transactions")
 public class RewardTransaction {
 
     @Id
-    private String transactionId;
+    private String rewardTransactionId;
     private LocalDateTime timestamp;
     private int pointsChanged;
 
     public String getFormattedTransaction() {
         return String.format("Transaction ID: %s, Timestamp: %s, Points Changed: %d", 
-                              transactionId, timestamp, pointsChanged);
+                              rewardTransactionId, timestamp, pointsChanged);
     }
 }

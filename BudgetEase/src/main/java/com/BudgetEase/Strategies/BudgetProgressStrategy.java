@@ -17,6 +17,6 @@ public class BudgetProgressStrategy implements ProgressStrategy {
     public double calculateProgress(FinancialTarget financialTarget){
         Budget budget = (Budget) financialTarget;
         double currentSpending = transactionService.getCurrentSpending(budget.getBudgetId());
-        return currentSpending/budget.getAllocatedAmount();
+        return currentSpending/budget.getAllocatedAmount() * 100;
     }
 }

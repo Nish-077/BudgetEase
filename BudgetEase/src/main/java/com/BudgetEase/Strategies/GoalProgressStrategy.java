@@ -17,7 +17,7 @@ public class GoalProgressStrategy implements ProgressStrategy {
     public double calculateProgress(FinancialTarget financialTarget){
         Goal goal = (Goal) financialTarget;
 
-        return transactionService.getCurrentGain(goal.getGoalId()) / goal.getTargetAmount();
+        return transactionService.getCurrentGain(goal.getGoalId()) / goal.getTargetAmount() * 100;
     }
 
 }
