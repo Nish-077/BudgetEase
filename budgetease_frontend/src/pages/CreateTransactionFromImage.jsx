@@ -70,7 +70,7 @@ const CreateTransactionsFromImage = () => {
               <h3 className="text-xl font-semibold text-green-700 mb-3">Extracted Transactions:</h3>
               <ul className="space-y-2">
                 {transactions.map((tx, index) => (
-                  <li key={index} className="p-4 bg-green-50 rounded-lg shadow">
+                  <li key={index} className="p-4 text-black bg-green-50 rounded-lg shadow">
                     <div><strong>Name:</strong> {tx.transactionName}</div>
                     <div><strong>Amount:</strong> ${tx.amount}</div>
                     <div><strong>Type:</strong> {tx.type}</div>

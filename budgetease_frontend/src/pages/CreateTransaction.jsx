@@ -164,7 +164,7 @@ const CreateTransaction = () => {
               )}
 
 <div>
-                <label className="block text-gray-700">Transaction Type</label>
+                <label className="block text-gray-700">Transaction Status</label>
                 <select
                   name="status"
                   value={formData.status}

@@ -59,9 +59,9 @@ const ViewRewards = () => {
                   >
                     <div className="mb-4 flex justify-between items-center">
                       <h3 className="text-xl font-bold text-purple-700">User Rewards</h3>
-                      <span className="text-purple-600 font-semibold">
+                      {/* <span className="text-purple-600 font-semibold">
                         Total: {group.totalPoints} Points
-                      </span>
+                      </span> */}
                     </div>
 
                     <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
